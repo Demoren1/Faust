@@ -2,7 +2,7 @@
 #include <ctype.h>
 #include <string.h>
 #define QUANTITY_OF_STR 23007
-#define QUANTITY_OF_SYM 1150350
+#define QUANTITY_OF_SYM 1380420
 void sorter(char *(str[]));
 
 void new_line_changer (char *str);

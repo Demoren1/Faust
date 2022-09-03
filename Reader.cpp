@@ -21,7 +21,8 @@ int main()
 
     for (int i = 0; i < QUANTITY_OF_STR && *pFaust != NULL; i++)
     {
-        fprintf(result, "%s %3d \n", pFaust[i],pFaust[i][0], i);
+        if (pFaust[i][0] != '\n' || pFaust[i][0] != '\0')
+            fprintf(result, "%s %3d \n", pFaust[i], i);
     }
 
     fclose(file_of_faust);
