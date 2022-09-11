@@ -36,4 +36,4 @@ int main()
     fclose(result);
     getchar();
     return 0;
-}
+}//

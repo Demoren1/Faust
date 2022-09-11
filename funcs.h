@@ -13,4 +13,4 @@ void new_line_changer (char *str);
 void made_massive_of_ptr(char *str_with_text, char *massive_Of_ptr[QUANTITY_OF_STR]);
 
 int Strlen(const char* str);
-// include guard
+// include guard//

@@ -28,4 +28,4 @@ void made_massive_of_ptr(char *str_with_text, char *massive_of_ptr[QUANTITY_OF_S
         }
     }
 }
-
+//
