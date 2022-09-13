@@ -1,6 +1,6 @@
 #include "funcs.h"
 
-void new_line_changer (char *str)
+void new_line_changer (char *str, int QUANTITY_OF_SYM)
 {
     for (int i = 0; i < QUANTITY_OF_SYM; i++)
     {
@@ -12,7 +12,7 @@ void new_line_changer (char *str)
     }
 }
 
-void made_massive_of_ptr(char *str_with_text, char *massive_of_ptr[QUANTITY_OF_STR])
+void made_massive_of_ptr(char *str_with_text, char *massive_of_ptr[QUANTITY_OF_STR], int QUANTITY_OF_SYM)
 {
     int counter = 0;
 
