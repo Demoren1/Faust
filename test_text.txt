@@ -1,5 +1,4 @@
-cbs
-cab
-bas
-bcd
-
+dsa
+cda
+abc
+bbc

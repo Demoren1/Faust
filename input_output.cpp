@@ -1,18 +1,22 @@
 #include "funcs.h"
 
-void new_line_changer (char *str, int QUANTITY_OF_SYM)
+int new_line_changer (char *str, int QUANTITY_OF_SYM)
 {
+    int QUANTITY_OF_STR = 0;
     for (int i = 0; i < QUANTITY_OF_SYM; i++)
-    {
+    {  
         if (str[i] == '\n')
         {
-            str[i] = '\0';
+	    QUANTITY_OF_STR++;
+            //str[i-1] = ' ';
+	    str[i] = '\0';
         }
 
     }
+   return QUANTITY_OF_STR;
 }
 
-void made_massive_of_ptr(char *str_with_text, char *massive_of_ptr[QUANTITY_OF_STR], int QUANTITY_OF_SYM)
+void made_massive_of_ptr(int QUANTITY_OF_STR, char *str_with_text, char *massive_of_ptr[], int QUANTITY_OF_SYM)
 {
     int counter = 0;
 
@@ -28,4 +32,22 @@ void made_massive_of_ptr(char *str_with_text, char *massive_of_ptr[QUANTITY_OF_S
         }
     }
 }
-//
+
+void find_lenght_of_buff(FILE *file_of_faust, size_t *QUANTITY_OF_SYM)
+{
+    fseek(file_of_faust, 0L, SEEK_END);
+    *QUANTITY_OF_SYM = ftell(file_of_faust) + 2;
+    fseek(file_of_faust, 0L, SEEK_SET);
+}
+
+void writing_to_file (FILE* result, char** pFaust, int QUANTITY_OF_STR)
+{
+    for (int i = 0; i < QUANTITY_OF_STR; i++)
+    {
+	    if (&(pFaust[i][0]) == NULL)
+		    continue;
+      int x = (pFaust[i][0] !=0);
+	    if (x)
+        fprintf(result, "%s \n", (char*) pFaust[i]);
+    }
+}
