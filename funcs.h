@@ -20,4 +20,6 @@ int MyCmp(const void* str1, const void* str2);
 void MySort(void *base, size_t Strings, size_t Size_of_obj, int (*MyCmp)(const void*, const void*));
 
 void Bubble_sort(char* *pFaust, int QUANTITY_OF_STR);
+
+
 // include guard//
