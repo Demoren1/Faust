@@ -27,10 +27,7 @@ int MyCmp(const void* v_str1, const void* v_str2)
     
     while (!(isalpha(str2[counter2])) && (counter2--) > 0)
     {} 
-
-    //puts(str1);
-   // puts(str2);
-
+     
     while (diff == 0 && str1[counter1] != 0 && str2[counter2] != 0)
     {   
 	    diff = str1[counter1] - str2[counter2];
@@ -41,14 +38,12 @@ int MyCmp(const void* v_str1, const void* v_str2)
     if (str1[counter1] == 0 || str2[counter2] ==0)
     {
 	    diff = str1[counter1] - str2[counter2];
-     //   printf("%d\n", diff);
 		return diff;
     }
-    //printf("%d\n", diff);
     return diff;
 }
 
-void Bubble_sort(char* *pFaust, int QUANTITY_OF_STR)
+void do_Bubble_sort(char* *pFaust, int QUANTITY_OF_STR)
 {   
 
     for (int ptr1 = 0; ptr1 < QUANTITY_OF_STR; ptr1++)

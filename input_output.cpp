@@ -1,14 +1,16 @@
 #include "funcs.h"
 
-int new_line_changer (char *str, int QUANTITY_OF_SYM)
+int new_line_changer (char *str, int quantity_of_sym)
 {
     int QUANTITY_OF_STR = 0;
-    for (int i = 0; i < QUANTITY_OF_SYM; i++)
+    for (int i = 0; i < quantity_of_sym; i++)
     {  
         if (str[i] == '\n')
         {
 	    QUANTITY_OF_STR++;
-            //str[i-1] = ' ';
+        
+        //if (str[i-1] = '\r')
+          //  str[i-1] = ' ';
 	    str[i] = '\0';
         }
 
@@ -16,28 +18,29 @@ int new_line_changer (char *str, int QUANTITY_OF_SYM)
    return QUANTITY_OF_STR;
 }
 
-void made_massive_of_ptr(int QUANTITY_OF_STR, char *str_with_text, char *massive_of_ptr[], int QUANTITY_OF_SYM)
+void made_massive_of_ptr(int QUANTITY_OF_STR, char *buffer, char *massive_of_ptr[], size_t quantity_of_sym)
 {
     int counter = 0;
 
-    for(int num_of_sym = 0; counter < QUANTITY_OF_STR && num_of_sym < QUANTITY_OF_SYM; num_of_sym++)
+    for(int num_of_sym = 0; counter < QUANTITY_OF_STR && num_of_sym < quantity_of_sym; num_of_sym++)
     {
-        if ( num_of_sym == 0 || (num_of_sym > 0 && str_with_text[num_of_sym-1] == '\0'))
+        if ( num_of_sym == 0 || (num_of_sym > 0 && buffer[num_of_sym-1] == '\0'))
         {	
-		if ((&str_with_text[num_of_sym]) != 0)
+		if (&(buffer[num_of_sym]) != 0)
 		{
-               	 massive_of_ptr[counter] = &str_with_text[num_of_sym];
+               	 massive_of_ptr[counter] = &buffer[num_of_sym];
                	 counter++;
 		}
         }
     }
 }
 
-void find_lenght_of_buff(FILE *file_of_faust, size_t *QUANTITY_OF_SYM)
-{
-    fseek(file_of_faust, 0L, SEEK_END);
-    *QUANTITY_OF_SYM = ftell(file_of_faust) + 2;
-    fseek(file_of_faust, 0L, SEEK_SET);
+void find_lenght_of_buff(FILE *file_of_faust, size_t *quantity_of_sym, const char *name_of_file)
+{   
+    struct stat data ={};
+    stat (name_of_file, &data);
+
+    *quantity_of_sym = data.st_size + 2;
 }
 
 void writing_to_file (FILE* result, char** pFaust, int QUANTITY_OF_STR)
