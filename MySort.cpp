@@ -47,17 +47,17 @@ int reverse_cmp(const void* v_str1, const void* v_str2)
     return diff;
 }
 
-void do_Bubble_sort(struct line Strings[], int quantity_of_str)
+void do_Bubble_sort(struct line Strings[], int quantity_of_str, int (*comparator) (const void*, const void*))
 {  
     struct line tmp = {};
     for (int counter1 = 0; counter1 < quantity_of_str; counter1++)
     {
         for (int counter2 = counter1 + 1; counter2 < quantity_of_str; counter2++)
         {
-            if ( ((Strings[counter1]).string[0]) == NULL || ((Strings[counter2]).string[0]) == NULL)
+            if (Strings[counter1].string == NULL || (Strings[counter2]).string == NULL)
                 continue;
                 
-            if (reverse_cmp(&(Strings[counter1]), &(Strings[counter2])) > 0)
+            if (comparator(&(Strings[counter1]), &(Strings[counter2])) > 0)
             {
                 tmp = Strings[counter1];
                 Strings[counter1] = Strings[counter2];

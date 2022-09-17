@@ -23,10 +23,12 @@ int new_line_changer(char *str, int quantity_of_sym)
 void made_massive_of_ptr(struct information *info_of_file)
 {
     assert(info_of_file != NULL);
+
     int counter = 0;
     int start_line = 1;
     int end_line = 0;
     char *buff = info_of_file->buffer;
+    
     for(int num_of_sym = 0; counter < info_of_file->quantity_of_str && num_of_sym < info_of_file->quantity_of_sym; num_of_sym++)
     {
         end_line++;
@@ -51,17 +53,18 @@ void made_massive_of_ptr(struct information *info_of_file)
 
 size_t find_lenght_of_buff(FILE *file_of_faust, const char *name_of_file)
 {
-    struct stat data ={};
-    stat (name_of_file, &data);
+    struct stat data = {};
+    stat(name_of_file, &data);
 
     return data.st_size + 2;
 }
 
-void writing_to_file(FILE* result, struct line Strings[], int quantity_of_str)
+void writing_to_file(FILE* result, struct line *Strings, int quantity_of_str)
 {
+    
     for (int i = 0; i < quantity_of_str; i++)
     {
-	    if (&((Strings[i]).string[0]) == NULL)
+	    if (Strings[i].string == NULL)
 		    continue;
       
 	    if ((Strings[i]).string[0] != 0)
@@ -82,7 +85,6 @@ void made_buff_and_pointers(const char *name_of_file, struct information *info_o
     info_of_file->buffer = (char*) calloc(info_of_file->quantity_of_sym, sizeof(char));
     
     fread(info_of_file->buffer, sizeof(char), info_of_file->quantity_of_sym, file_of_faust);
-    DBG;
         
     info_of_file->quantity_of_str = new_line_changer(info_of_file->buffer, info_of_file->quantity_of_sym);
     
@@ -90,4 +92,17 @@ void made_buff_and_pointers(const char *name_of_file, struct information *info_o
   
     
     fclose(file_of_faust);
+}
+
+void write_original(FILE *destination, char *buffer, int quantity_of_sym)
+{
+ for (int i = 0; i < quantity_of_sym; i++)
+    {  
+        if (buffer[i] == '\0')
+        {   
+            buffer[i] = '\n';
+        }
+    }
+
+    fwrite(buffer, sizeof(char), quantity_of_sym, destination);
 }

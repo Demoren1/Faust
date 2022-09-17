@@ -10,9 +10,6 @@ int straight_cmp(const void* v_str1, const void* v_str2)
     char *str2 = structure_str2->string;
     int diff = 0;
 
-    int counter1 = 0;
-    int counter2 = 0;
-
     while (!(isalpha(*str1)) && *str1++ != 0)
     {} 
     

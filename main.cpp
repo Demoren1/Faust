@@ -1,5 +1,5 @@
 #include "funcs.h"
-const int NUM_OF_FILE = 3;
+const int NUM_OF_FILE = 2;
 int main()
 {
   
@@ -15,14 +15,19 @@ int main()
   
   made_massive_of_ptr(&info_of_file);
   
-  qsort(info_of_file.strings, info_of_file.quantity_of_str, sizeof(info_of_file.strings[0]), straight_cmp);
+  //qsort(info_of_file.strings, info_of_file.quantity_of_str, sizeof(info_of_file.strings[0]), straight_cmp);
+  do_Bubble_sort(info_of_file.strings, info_of_file.quantity_of_str, straight_cmp);
   writing_to_file(result, info_of_file.strings, info_of_file.quantity_of_str);
   
   fputs("******************************************************\n", result);
   
-  //do_Bubble_sort(info_of_file.strings, info_of_file.quantity_of_str);
-  //writing_to_file(result, info_of_file.strings, info_of_file.quantity_of_str);
+  do_Bubble_sort(info_of_file.strings, info_of_file.quantity_of_str, reverse_cmp);
+  writing_to_file(result, info_of_file.strings, info_of_file.quantity_of_str);
   
+  fputs("******************************************************\n", result);
+
+  write_original(result, info_of_file.buffer, info_of_file.quantity_of_sym);
+
   //MySort(pFaust, quantity_of_str, sizeof(pFaust[0]), reverse_cmp);
   
   fclose(result);
