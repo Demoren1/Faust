@@ -1,10 +1,13 @@
 #include "funcs.h"
 int Strcmp(const void* v_str1, const void* v_str2)
 {
-    const char* str1 = *(const char**) v_str1;
-    const char* str2 = *(const char**) v_str2;
-    assert(str1 != NULL);
-    assert(str2 != NULL);
+    const struct line*  structure_str1 = (const struct line*) v_str1;
+    const struct line*  structure_str2 = (const struct line*) v_str2;
+    assert(structure_str1->string != NULL);
+    assert(structure_str2->string != NULL);
+    
+    char *str1 = structure_str1->string;
+    char *str2 = structure_str2->string;
     int diff = 0;
     int counter = 0;
     int counter1 = 0;

@@ -1,8 +1,8 @@
 #include "funcs.h"
-const int NUM_OF_FILE = 3;
+const int NUM_OF_FILE = 2;
 int main()
 {
-  FILE *file_of_faust;
+  
   FILE *result = fopen("result.txt", "w");  
 
   const char* names_of_files[] = {"test_text.txt",
@@ -10,36 +10,38 @@ int main()
                                   "work_text2.txt", 
                                   "work_text3.txt"};
 
-  file_of_faust = fopen(names_of_files[NUM_OF_FILE], "r");
-  assert(file_of_faust != NULL);
-    
-  size_t quantity_of_sym = 0; 
-    
-  find_lenght_of_buff(file_of_faust, &quantity_of_sym, names_of_files[NUM_OF_FILE]);
-
-  char buff_of_Faust[quantity_of_sym] = {};
- 
-  fread(buff_of_Faust, sizeof(char), quantity_of_sym, file_of_faust);
-    
-  int QUANTITY_OF_STR = new_line_changer(buff_of_Faust, quantity_of_sym);
+  struct information info_of_file;
+  made_buff_and_pointers(names_of_files[NUM_OF_FILE], &info_of_file);
+  //DBG;
+  //printf("%d, %d\n", info_of_file.quantity_of_sym, info_of_file.quantity_of_str);
+  //DBG;
   
-  char *(pFaust[QUANTITY_OF_STR]) = {};
-
-  made_massive_of_ptr(QUANTITY_OF_STR, buff_of_Faust, pFaust, quantity_of_sym);
-
-  do_Bubble_sort(pFaust, QUANTITY_OF_STR);
-  writing_to_file(result, pFaust, QUANTITY_OF_STR);
-
-  qsort(pFaust, QUANTITY_OF_STR, sizeof(pFaust[0]), Strcmp);
-  writing_to_file(result, pFaust, QUANTITY_OF_STR);
- 
-  made_massive_of_ptr(QUANTITY_OF_STR, buff_of_Faust, pFaust, quantity_of_sym);
+  made_massive_of_ptr(info_of_file.quantity_of_str, info_of_file.buff_of_Faust, info_of_file.quantity_of_sym, info_of_file.strings);
+  //DBG;
+  /*
+  for (int i = 0; i < quantity_of_str; i++)
+  { 
+    puts((strings[i]).string);
+    printf("%d \n", (strings[i]).len );
+  }
+  */
+  qsort(info_of_file.strings, info_of_file.quantity_of_str, sizeof(info_of_file.strings[0]), Strcmp);
+  writing_to_file(result, info_of_file.strings, info_of_file.quantity_of_str);
   
-  //MySort(pFaust, QUANTITY_OF_STR, sizeof(pFaust[0]), MyCmp);
+  fputs("******************************************************\n", result);
   
-  fclose(file_of_faust);
+  do_Bubble_sort(info_of_file.strings, info_of_file.quantity_of_str);
+  writing_to_file(result, info_of_file.strings, info_of_file.quantity_of_str);
+  
+  //MySort(pFaust, quantity_of_str, sizeof(pFaust[0]), MyCmp);
+  
   fclose(result);
   // getchar();
+  
+  free(info_of_file.buff_of_Faust);
+  free(info_of_file.strings);
+ 
+  //DBG;
   return 0;
 }
 

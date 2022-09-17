@@ -14,5 +14,5 @@ MySort.o : MySort.cpp
 	g++ $(CFLAGS) MySort.cpp -c
 
 clean:
-	rm -rf *.o Faust_faust
+	rm -rf *.o *.save Faust_faust
 

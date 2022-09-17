@@ -10,53 +10,60 @@ void MySort(void *base, size_t Strings, size_t Size_of_obj, int (*MyCmp)(const v
 
 int MyCmp(const void* v_str1, const void* v_str2)
 {
-    const char* str1 = (const char*) v_str1;
-    const char* str2 = (const char*) v_str2;
+    //puts("in sorter");
+    const struct line* str1 = ((const struct line*) v_str1);
+    const struct line* str2 = ((const struct line*) v_str2);
     
-    assert(str1 != NULL);
-    assert(str2 != NULL);
+    assert(str1->string[0] != NULL);
+    assert(str2->string[0] != NULL);
     
-    char tmp1 = 0;
-    char tmp2 = 0;
+    char* string1 = str1->string;
+    char* string2 = str2->string;
+    int len1 = str1->len;
+    int len2= str2->len;
     int diff = 0;
-    int counter1 = strlen(str1) - 1;
-    int counter2 = strlen(str2) - 1;
+
+    while (!(isalpha(string1[len1])) && len1 > 0)
+    {
+        len1--;
+    } 
     
-    while (!(isalpha(str1[counter1])) && (counter1--) > 0)
-    {} 
-    
-    while (!(isalpha(str2[counter2])) && (counter2--) > 0)
-    {} 
-     
-    while (diff == 0 && str1[counter1] != 0 && str2[counter2] != 0)
-    {   
-	    diff = str1[counter1] - str2[counter2];
-	    counter1--;
-	    counter2--;
+    while (!(isalpha(string2[len2])) && len2 > 0)
+    {
+        len2--;
+    } 
+
+    while (diff == 0 && len1 > 0 && len2 > 0)
+    {
+	    diff = string1[len1] - string2[len2];
+	    len1--;
+	    len2--;
     }
     
-    if (str1[counter1] == 0 || str2[counter2] ==0)
+    if (len1 == 0 || len2 ==0)
     {
-	    diff = str1[counter1] - str2[counter2];
+	    diff = string1[len1] - string2[len2];
 		return diff;
     }
+    
     return diff;
 }
 
-void do_Bubble_sort(char* *pFaust, int QUANTITY_OF_STR)
-{   
-
-    for (int ptr1 = 0; ptr1 < QUANTITY_OF_STR; ptr1++)
+void do_Bubble_sort(struct line Strings[], int quantity_of_str)
+{  
+    struct line tmp = {};
+    for (int counter1 = 0; counter1 < quantity_of_str; counter1++)
     {
-        for (int ptr2 = ptr1 + 1; ptr2 < QUANTITY_OF_STR; ptr2++)
+        for (int counter2 = counter1 + 1; counter2 < quantity_of_str; counter2++)
         {
-            if ( &(pFaust[ptr1]) == NULL || &(pFaust[ptr2]) == NULL)
+            if ( ((Strings[counter1]).string[0]) == NULL || ((Strings[counter2]).string[0]) == NULL)
                 continue;
-            if ((MyCmp(pFaust[ptr1], pFaust[ptr2])) > 0)
+                
+            if (MyCmp(&(Strings[counter1]), &(Strings[counter2])) > 0)
             {
-                char* tmp = pFaust[ptr1];
-                pFaust[ptr1] = pFaust[ptr2];
-                pFaust[ptr2] = tmp;
+                tmp = Strings[counter1];
+                Strings[counter1] = Strings[counter2];
+                Strings[counter2] = tmp;
             }
         }
     }
