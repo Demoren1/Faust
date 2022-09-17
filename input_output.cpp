@@ -1,6 +1,6 @@
 #include "funcs.h"
 
-int new_line_changer (char *str, int quantity_of_sym)
+int new_line_changer(char *str, int quantity_of_sym)
 {
     int quantity_of_str = 0;
     
@@ -20,75 +20,73 @@ int new_line_changer (char *str, int quantity_of_sym)
    return quantity_of_str;
 }
 
-void made_massive_of_ptr(int quantity_of_str, char *buffer, size_t quantity_of_sym, struct line Strings[])
+void made_massive_of_ptr(struct information *info_of_file)
 {
+    assert(info_of_file != NULL);
     int counter = 0;
-    
-    for(int num_of_sym = 0; counter < quantity_of_str && num_of_sym < quantity_of_sym; num_of_sym++)
+    int start_line = 1;
+    int end_line = 0;
+    char *buff = info_of_file->buffer;
+    for(int num_of_sym = 0; counter < info_of_file->quantity_of_str && num_of_sym < info_of_file->quantity_of_sym; num_of_sym++)
     {
-        if ( num_of_sym == 0 || (num_of_sym > 0 && buffer[num_of_sym-1] == '\0'))
+        end_line++;
+        if ( num_of_sym == 0 || (num_of_sym > 0 && buff[num_of_sym-1] == '\0'))
         {	
-            if (&(buffer[num_of_sym]) != 0)
-            {       Strings[counter].string = &buffer[num_of_sym];
-                    //puts((Strings[counter]).string);
-                    if(counter > 0)
-                    {
-                        (Strings[counter-1]).len = Strings[counter].string - Strings[counter-1].string -1;
-                    }
-                    counter++;            
+            if ((buff + num_of_sym) != 0)
+            {       
+                info_of_file->strings[counter].string = buff + num_of_sym;
+                    
+                if(counter > 0)
+                {
+                    (info_of_file->strings[counter-1]).len = end_line - start_line - 1;
+                    start_line = end_line;
+                }
+                counter++;            
             }
         }
     }
-    (Strings[counter-1]).len = strlen((Strings[counter-1]).string) ;
+    (info_of_file->strings[counter-1]).len = strlen((info_of_file->strings[counter-1]).string) ;
     
 }
 
-void find_lenght_of_buff(FILE *file_of_faust, size_t *quantity_of_sym, const char *name_of_file)
-{   
+size_t find_lenght_of_buff(FILE *file_of_faust, const char *name_of_file)
+{
     struct stat data ={};
     stat (name_of_file, &data);
-    //assert on directory
 
-    *quantity_of_sym = data.st_size + 2;
+    return data.st_size + 2;
 }
 
-void writing_to_file (FILE* result, struct line Strings[], int quantity_of_str)
+void writing_to_file(FILE* result, struct line Strings[], int quantity_of_str)
 {
     for (int i = 0; i < quantity_of_str; i++)
     {
 	    if (&((Strings[i]).string[0]) == NULL)
 		    continue;
-      int x = ((Strings[i]).string[0] !=0);
-	  if (x)
-        fprintf(result, "%s \n", (Strings[i]).string);
+      
+	    if ((Strings[i]).string[0] != 0)
+            fprintf(result, "%s \n", (Strings[i]).string);
     }
     printf("%d\n", quantity_of_str);
-    for (int i = 0; i < quantity_of_str; i++)
-    {
-        //puts((Strings[i].string));
-    }
 }
 
-void made_buff_and_pointers(const char *name_of_file, struct information *inf_of_file)
+void made_buff_and_pointers(const char *name_of_file, struct information *info_of_file)
 {
-    
-    //DBG;
     FILE *file_of_faust = fopen(name_of_file, "r");
-    //DBG;
-    assert(file_of_faust != NULL);
-    //DBG;
-    inf_of_file->quantity_of_sym = 0; 
-    //DBG;    
-    find_lenght_of_buff(file_of_faust, &(inf_of_file->quantity_of_sym), name_of_file);
-    //DBG;
-    inf_of_file->buff_of_Faust = (char*) calloc(inf_of_file->quantity_of_sym, sizeof(char));
     
-    fread(inf_of_file->buff_of_Faust, sizeof(char), inf_of_file->quantity_of_sym, file_of_faust);
+    assert(file_of_faust != NULL);
+    assert(info_of_file !=NULL);
+
+    info_of_file->quantity_of_sym = find_lenght_of_buff(file_of_faust, name_of_file);
+    
+    info_of_file->buffer = (char*) calloc(info_of_file->quantity_of_sym, sizeof(char));
+    
+    fread(info_of_file->buffer, sizeof(char), info_of_file->quantity_of_sym, file_of_faust);
     DBG;
         
-    inf_of_file->quantity_of_str = new_line_changer(inf_of_file->buff_of_Faust, inf_of_file->quantity_of_sym);
+    info_of_file->quantity_of_str = new_line_changer(info_of_file->buffer, info_of_file->quantity_of_sym);
     
-    inf_of_file->strings = (struct line*) calloc(inf_of_file->quantity_of_str, sizeof(struct line));
+    info_of_file->strings = (struct line*) calloc(info_of_file->quantity_of_str, sizeof(struct line));
   
     
     fclose(file_of_faust);

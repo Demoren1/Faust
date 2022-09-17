@@ -1,16 +1,15 @@
 #include "funcs.h"
-void MySort(void *base, size_t Strings, size_t Size_of_obj, int (*MyCmp)(const void*, const void*))
+void MySort(void *base, size_t Strings, size_t Size_of_obj, int (*reverse_cmp)(const void*, const void*))
 {
     puts("SORT ok");
     for (int i = 0; i < Strings; i++)
     {
-        MyCmp(base, base);
+        reverse_cmp(base, base);
     }
 }
 
-int MyCmp(const void* v_str1, const void* v_str2)
+int reverse_cmp(const void* v_str1, const void* v_str2)
 {
-    //puts("in sorter");
     const struct line* str1 = ((const struct line*) v_str1);
     const struct line* str2 = ((const struct line*) v_str2);
     
@@ -22,7 +21,7 @@ int MyCmp(const void* v_str1, const void* v_str2)
     int len1 = str1->len;
     int len2= str2->len;
     int diff = 0;
-
+    
     while (!(isalpha(string1[len1])) && len1 > 0)
     {
         len1--;
@@ -32,20 +31,19 @@ int MyCmp(const void* v_str1, const void* v_str2)
     {
         len2--;
     } 
-
+    
     while (diff == 0 && len1 > 0 && len2 > 0)
     {
-	    diff = string1[len1] - string2[len2];
+	    diff = (int) string1[len1] - (int)string2[len2];
 	    len1--;
 	    len2--;
     }
     
-    if (len1 == 0 || len2 ==0)
+    if (len1+1 == 0 || len2+1 ==0)
     {
 	    diff = string1[len1] - string2[len2];
-		return diff;
+        return diff;
     }
-    
     return diff;
 }
 
@@ -59,7 +57,7 @@ void do_Bubble_sort(struct line Strings[], int quantity_of_str)
             if ( ((Strings[counter1]).string[0]) == NULL || ((Strings[counter2]).string[0]) == NULL)
                 continue;
                 
-            if (MyCmp(&(Strings[counter1]), &(Strings[counter2])) > 0)
+            if (reverse_cmp(&(Strings[counter1]), &(Strings[counter2])) > 0)
             {
                 tmp = Strings[counter1];
                 Strings[counter1] = Strings[counter2];
