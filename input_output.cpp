@@ -2,6 +2,8 @@
 
 int new_line_changer(char *str, int quantity_of_sym)
 {
+    assert(str != nullptr);
+    assert(quantity_of_sym != 0);
     int quantity_of_str = 0;
     
     for (int i = 0; i < quantity_of_sym; i++)
@@ -53,6 +55,9 @@ void made_massive_of_ptr(struct information *info_of_file)
 
 size_t find_lenght_of_buff(FILE *file_of_faust, const char *name_of_file)
 {
+    assert(file_of_faust != nullptr);
+    assert(name_of_file != nullptr);
+
     struct stat data = {};
     stat(name_of_file, &data);
 
@@ -61,6 +66,8 @@ size_t find_lenght_of_buff(FILE *file_of_faust, const char *name_of_file)
 
 void writing_to_file(FILE* result, struct line *Strings, int quantity_of_str)
 {
+    assert(result != nullptr);
+    assert(Strings != nullptr);
     
     for (int i = 0; i < quantity_of_str; i++)
     {
@@ -96,7 +103,9 @@ void made_buff_and_pointers(const char *name_of_file, struct information *info_o
 
 void write_original(FILE *destination, char *buffer, int quantity_of_sym)
 {
- for (int i = 0; i < quantity_of_sym; i++)
+    assert(destination != nullptr);
+    
+    for (int i = 0; i < quantity_of_sym; i++)
     {  
         if (buffer[i] == '\0')
         {   
