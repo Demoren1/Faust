@@ -1,11 +1,22 @@
 #include "funcs.h"
-void MySort(void *base, size_t Strings, size_t Size_of_obj, int (*reverse_cmp)(const void*, const void*))
-{
-    puts("SORT ok");
-    for (int i = 0; i < Strings; i++)
+void MySort(void *v_base, size_t quantity_of_str, size_t size_of_obj, int (*comparator)(const void*, const void*))
+{   
+    char *base = (char*) v_base;
+    char *tmp = (char*) calloc(1, size_of_obj); 
+    for (int counter1 = 0; counter1 < quantity_of_str; counter1++)
     {
-        reverse_cmp(base, base);
+        for (int counter2 = counter1 + 1; counter2 < quantity_of_str; counter2++)
+        {
+            if (comparator(base + counter1 * size_of_obj, base + counter2 * size_of_obj) > 0)
+            {
+                memcpy(tmp, base + counter1 * size_of_obj, size_of_obj);
+                memcpy(base + counter1 * size_of_obj, base + counter2 * size_of_obj, size_of_obj);
+                memcpy(base + counter2 * size_of_obj, tmp, size_of_obj);
+
+            }
+        }
     }
+    free(tmp);
 }
 
 int reverse_cmp(const void* v_str1, const void* v_str2)
@@ -13,8 +24,8 @@ int reverse_cmp(const void* v_str1, const void* v_str2)
     const struct line* str1 = ((const struct line*) v_str1);
     const struct line* str2 = ((const struct line*) v_str2);
     
-    assert(str1->string[0] != NULL);
-    assert(str2->string[0] != NULL);
+    assert(str1 != NULL);
+    assert(str2 != NULL);
     
     char* string1 = str1->string;
     char* string2 = str2->string;

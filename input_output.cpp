@@ -10,10 +10,10 @@ int new_line_changer(char *str, int quantity_of_sym)
     {  
         if (str[i] == '\n')
         {   
-            if (str[i-1] == '\r')
-            {
-                str[i-1] = ' ';
-            }
+            //if (str[i-1] == '\r')
+            //{
+             //   str[i-1] = ' ';
+            //}
             quantity_of_str++;
             str[i] = '\0';
         }
@@ -39,7 +39,11 @@ void made_massive_of_ptr(struct information *info_of_file)
             if ((buff + num_of_sym) != 0)
             {       
                 info_of_file->strings[counter].string = buff + num_of_sym;
-                    
+                if (info_of_file->strings[counter].string[0] == NULL)
+                {  
+                    info_of_file->strings[counter].string = "\0\0";
+                    //printf("%d\n", counter);
+                }    
                 if(counter > 0)
                 {
                     (info_of_file->strings[counter-1]).len = end_line - start_line - 1;
@@ -61,7 +65,7 @@ size_t find_lenght_of_buff(FILE *file_of_faust, const char *name_of_file)
     struct stat data = {};
     stat(name_of_file, &data);
 
-    return data.st_size + 2;
+    return data.st_size;
 }
 
 void writing_to_file(FILE* result, struct line *Strings, int quantity_of_str)
