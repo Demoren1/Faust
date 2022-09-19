@@ -1,10 +1,22 @@
-#include "funcs.h"
+#include "../include/i_o_text_funcs.h"
 
-int new_line_changer(char *str, int quantity_of_sym)
+FILE* file_open1(char* name_of_out_file, int errno)
+{
+    FILE* ptr_on_out = fopen(name_of_out_file, "w");
+    assert (ptr_on_out != NULL);
+    if (errno != 0)
+    {
+        strerror(errno);
+    }
+
+    return ptr_on_out;
+}
+
+static ssize_t count_lines(char *str, int quantity_of_sym)
 {
     assert(str != nullptr);
-    assert(quantity_of_sym != 0);
-    int quantity_of_str = 0;
+    assert(quantity_of_sym != 0); //
+    ssize_t quantity_of_str = 0; 
     
     for (int i = 0; i < quantity_of_sym; i++)
     {  
@@ -14,15 +26,17 @@ int new_line_changer(char *str, int quantity_of_sym)
             //{
              //   str[i-1] = ' ';
             //}
-            quantity_of_str++;
+
+            quantity_of_str++; // 
             str[i] = '\0';
         }
 
-    }
+    } 
+
    return quantity_of_str;
 }
 
-void made_massive_of_ptr(struct information *info_of_file)
+static void parse_strings(struct Information *info_of_file) 
 {
     assert(info_of_file != NULL);
 
@@ -39,36 +53,42 @@ void made_massive_of_ptr(struct information *info_of_file)
             if ((buff + num_of_sym) != 0)
             {       
                 info_of_file->strings[counter].string = buff + num_of_sym;
-                if (info_of_file->strings[counter].string[0] == NULL)
+                
+                if (info_of_file->strings[counter].string[0] == NULL) 
                 {  
-                    info_of_file->strings[counter].string = "\0\0";
-                    //printf("%d\n", counter);
+                    info_of_file->strings[counter].string = "\0"; //^ not include empty lines
                 }    
-                if(counter > 0)
+
+                if (counter > 0) 
                 {
                     (info_of_file->strings[counter-1]).len = end_line - start_line - 1;
                     start_line = end_line;
                 }
-                counter++;            
+                counter++;
             }
         }
     }
     (info_of_file->strings[counter-1]).len = strlen((info_of_file->strings[counter-1]).string) ;
-    
 }
 
-size_t find_lenght_of_buff(FILE *file_of_faust, const char *name_of_file)
+static size_t find_lenght_of_buff(FILE *file_of_faust, const char *name_of_file) //
 {
     assert(file_of_faust != nullptr);
     assert(name_of_file != nullptr);
 
     struct stat data = {};
-    stat(name_of_file, &data);
+    stat(name_of_file, &data); 
+
+    if (data.st_mode == S_IFDIR)
+        {
+            printf("Trying to find size of dir");
+            abort();
+        }
 
     return data.st_size;
 }
 
-void writing_to_file(FILE* result, struct line *Strings, int quantity_of_str)
+void text_write_to_file(FILE* result, struct line *Strings, int quantity_of_str)
 {
     assert(result != nullptr);
     assert(Strings != nullptr);
@@ -81,31 +101,33 @@ void writing_to_file(FILE* result, struct line *Strings, int quantity_of_str)
 	    if ((Strings[i]).string[0] != 0)
             fprintf(result, "%s \n", (Strings[i]).string);
     }
+    END_OF_OUTPUT;
     printf("%d\n", quantity_of_str);
 }
 
-void made_buff_and_pointers(const char *name_of_file, struct information *info_of_file)
+void text_read(const char *name_of_file, struct Information *info_of_file, FILE *file_of_faust) 
 {
-    FILE *file_of_faust = fopen(name_of_file, "r");
-    
     assert(file_of_faust != NULL);
-    assert(info_of_file !=NULL);
+    assert(info_of_file  != NULL); 
 
     info_of_file->quantity_of_sym = find_lenght_of_buff(file_of_faust, name_of_file);
     
     info_of_file->buffer = (char*) calloc(info_of_file->quantity_of_sym, sizeof(char));
+    assert(info_of_file->buffer != NULL);
     
-    fread(info_of_file->buffer, sizeof(char), info_of_file->quantity_of_sym, file_of_faust);
+    int test_fread = fread(info_of_file->buffer, sizeof(char), info_of_file->quantity_of_sym, file_of_faust);
+    assert(test_fread != 0);
         
-    info_of_file->quantity_of_str = new_line_changer(info_of_file->buffer, info_of_file->quantity_of_sym);
-    
+    info_of_file->quantity_of_str = count_lines(info_of_file->buffer, info_of_file->quantity_of_sym);
+    assert(info_of_file->quantity_of_str != -1);
+
     info_of_file->strings = (struct line*) calloc(info_of_file->quantity_of_str, sizeof(struct line));
-  
-    
-    fclose(file_of_faust);
+    assert(info_of_file->strings != NULL);
+
+    parse_strings(info_of_file);
 }
 
-void write_original(FILE *destination, char *buffer, int quantity_of_sym)
+void text_write_original(FILE *destination, char *buffer, int quantity_of_sym)
 {
     assert(destination != nullptr);
     
@@ -118,4 +140,10 @@ void write_original(FILE *destination, char *buffer, int quantity_of_sym)
     }
 
     fwrite(buffer, sizeof(char), quantity_of_sym, destination);
+}
+
+void text_detor(struct Information *info_of_file)
+{
+    free (info_of_file->buffer);
+    free(info_of_file->strings);
 }
