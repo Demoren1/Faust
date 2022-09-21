@@ -1,8 +1,7 @@
-all : Faust_faust
-SRC = src/
-OBJ = obj/
-##all : mkdir Faust_faust
-## make basics
+all : mkdir Faust_faust
+SRC_DIR = src/
+OBJ_DIR = obj/
+CC = g++
 
 CFLAGS=-D _DEBUG -ggdb3 -std=c++20 -O0 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations \
 -Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts -Wconditionally-supported \
@@ -14,28 +13,28 @@ CFLAGS=-D _DEBUG -ggdb3 -std=c++20 -O0 -Wall -Wextra -Weffc++ -Waggressive-loop-
 -fno-omit-frame-pointer -fPIE -fsanitize=address,alignment,bool,bounds,enum,float-cast-overflow,float-divide-by-zero,integer-divide-by-zero,leak,nonnull-attribute,null,object-size,return,returns-nonnull-attribute,shift,signed-integer-overflow,undefined,unreachable,vla-bound,vptr \
 -pie -Wlarger-than=8192 -Wstack-usage=8192
 
-#objs -> macro
-Faust_faust : $(OBJ)main.o $(OBJ)input_output.o $(OBJ)comparators.o $(OBJ)MySort.o 
-	@g++ $(CFLAGS)  $(OBJ)main.o $(OBJ)input_output.o $(OBJ)comparators.o $(OBJ)MySort.o -o Faust_faust
+#OBJ_DIRs -> macro
+Faust_faust : $(OBJ_DIR)main.o $(OBJ_DIR)input_output.o $(OBJ_DIR)comparators.o $(OBJ_DIR)MySort.o 
+	@$(CC) $(CFLAGS)  $(OBJ_DIR)main.o $(OBJ_DIR)input_output.o $(OBJ_DIR)comparators.o $(OBJ_DIR)MySort.o -o Faust_faust
 
-$(OBJ)input_output.o : $(SRC)input_output.cpp
-	@g++ $(CFLAGS) $(SRC)input_output.cpp -c -o $(OBJ)input_output.o
+$(OBJ_DIR)input_output.o : $(SRC_DIR)input_output.cpp
+	@$(CC) $(CFLAGS) $(SRC_DIR)input_output.cpp -c -o $(OBJ_DIR)input_output.o
 
-$(OBJ)main.o : $(SRC)main.cpp
-	@g++ $(CFLAGS) $(SRC)main.cpp -c -o $(OBJ)main.o 
+$(OBJ_DIR)main.o : $(SRC_DIR)main.cpp
+	@$(CC) $(CFLAGS) $(SRC_DIR)main.cpp -c -o $(OBJ_DIR)main.o 
 
-$(OBJ)comparators.o : $(SRC)comparators.cpp
-	@g++ $(CFLAGS) $(SRC)comparators.cpp -c -o $(OBJ)comparators.o
+$(OBJ_DIR)comparators.o : $(SRC_DIR)comparators.cpp
+	@$(CC) $(CFLAGS) $(SRC_DIR)comparators.cpp -c -o $(OBJ_DIR)comparators.o
 
-$(OBJ)MySort.o : $(SRC)MySort.cpp
-	@g++ $(CFLAGS) $(SRC)MySort.cpp -c -o $(OBJ)MySort.o
+$(OBJ_DIR)MySort.o : $(SRC_DIR)MySort.cpp
+	@$(CC) $(CFLAGS) $(SRC_DIR)MySort.cpp -c -o $(OBJ_DIR)MySort.o
 
 # g++ $(CXX)
 # $^ $@ g++
 
-##mkdir:
-#	mkdir -p obj 
+mkdir:
+	@mkdir -p $(OBJ_DIR)
 
 clean:
-	rm $(OBJ)*.o *.save Faust_faust
+	rm $(OBJ_DIR)*.o *.save Faust_faust
 

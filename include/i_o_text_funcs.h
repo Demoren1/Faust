@@ -1,8 +1,12 @@
+#ifndef MY_GUARD_HEADER_2
+#define MY_GUARD_HEADER_2
+
 #include <stdio.h>
 #include <sys/stat.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #define END_OF_OUTPUT fputs("******************************************************\n", result);
 
 static size_t find_lenght_of_buff(FILE *file_of_faust, const char *name_of_file);
@@ -25,3 +29,4 @@ struct Information
   struct line *strings;
 };
 
+#endif

@@ -2,12 +2,11 @@
 
 int main(int argc, char** argv)
 { 
-  char *name_of_file = argv[1]; // default file
-  int errno = 0;
+  const char *start_file = (argc > 1) ? argv[1] : "work_text2.txt";
+  const char *name_of_file = start_file;
 
-  //FILE *result = file_open1("result.txt", errno);
-  FILE *result  = fopen("result.txt", "w");
-
+  FILE *result = file_open1("result.txt");
+  //FILE *result  = fopen("result.txt", "w");
   FILE *file_of_faust = fopen(name_of_file, "r");
 
   assert(file_of_faust != NULL);
@@ -16,13 +15,13 @@ int main(int argc, char** argv)
   struct Information info_of_file = {};   
   text_read(name_of_file, &info_of_file, file_of_faust);                                    
   
-  text_my_sort(info_of_file.strings, info_of_file.quantity_of_str, sizeof(info_of_file.strings[0]), straight_cmp);
-  text_write_to_file(result, info_of_file.strings, info_of_file.quantity_of_str);
+  //text_my_sort(info_of_file.strings, info_of_file.quantity_of_str, sizeof(info_of_file.strings[0]), straight_cmp);
+  //text_write_to_file(result, info_of_file.strings, info_of_file.quantity_of_str);
 
   text_my_sort(info_of_file.strings, info_of_file.quantity_of_str, sizeof(info_of_file.strings[0]), reverse_cmp);
   text_write_to_file(result, info_of_file.strings, info_of_file.quantity_of_str);
 
-  text_write_original(result, info_of_file.buffer, info_of_file.quantity_of_sym);
+  //text_write_original(result, info_of_file.buffer, info_of_file.quantity_of_sym);
 
   fclose(result);
   fclose(file_of_faust);

@@ -1,7 +1,8 @@
 #include "../include/i_o_text_funcs.h"
 
-FILE* file_open1(char* name_of_out_file, int errno)
-{
+FILE* file_open1(const char* name_of_out_file)
+{   
+    errno = 0;
     FILE* ptr_on_out = fopen(name_of_out_file, "w");
     assert (ptr_on_out != NULL);
     if (errno != 0)
@@ -49,26 +50,23 @@ static void parse_strings(struct Information *info_of_file)
     {
         end_line++;
         if ( num_of_sym == 0 || (num_of_sym > 0 && buff[num_of_sym-1] == '\0'))
-        {	
-            if ((buff + num_of_sym) != 0)
-            {       
-                info_of_file->strings[counter].string = buff + num_of_sym;
-                
-                if (info_of_file->strings[counter].string[0] == NULL) 
-                {  
-                    info_of_file->strings[counter].string = "\0"; //^ not include empty lines
-                }    
+        {	     
+            info_of_file->strings[counter].string = buff + num_of_sym;
+            
+            if (info_of_file->strings[counter].string[0] == '\0') 
+            {  
+                 info_of_file->strings[counter].string = "\0";
+            }    
 
-                if (counter > 0) 
-                {
-                    (info_of_file->strings[counter-1]).len = end_line - start_line - 1;
-                    start_line = end_line;
-                }
-                counter++;
+            if (counter > 0) 
+           {
+                info_of_file->strings[counter-1].len = end_line - start_line - 1;
+                start_line = end_line;
             }
+            counter++;
         }
     }
-    (info_of_file->strings[counter-1]).len = strlen((info_of_file->strings[counter-1]).string) ;
+    info_of_file->strings[counter-1].len = strlen((info_of_file->strings[counter-1]).string);
 }
 
 static size_t find_lenght_of_buff(FILE *file_of_faust, const char *name_of_file) //
@@ -79,7 +77,7 @@ static size_t find_lenght_of_buff(FILE *file_of_faust, const char *name_of_file)
     struct stat data = {};
     stat(name_of_file, &data); 
 
-    if (data.st_mode == S_IFDIR)
+    if (((data.st_mode & S_IFMT) - S_IFDIR) == 0)
         {
             printf("Trying to find size of dir");
             abort();
@@ -98,7 +96,7 @@ void text_write_to_file(FILE* result, struct line *Strings, int quantity_of_str)
 	    if (Strings[i].string == NULL)
 		    continue;
       
-	    if ((Strings[i]).string[0] != 0)
+	    if (Strings[i].string[0] != 0)
             fprintf(result, "%s \n", (Strings[i]).string);
     }
     END_OF_OUTPUT;
@@ -119,7 +117,6 @@ void text_read(const char *name_of_file, struct Information *info_of_file, FILE 
     assert(test_fread != 0);
         
     info_of_file->quantity_of_str = count_lines(info_of_file->buffer, info_of_file->quantity_of_sym);
-    assert(info_of_file->quantity_of_str != -1);
 
     info_of_file->strings = (struct line*) calloc(info_of_file->quantity_of_str, sizeof(struct line));
     assert(info_of_file->strings != NULL);

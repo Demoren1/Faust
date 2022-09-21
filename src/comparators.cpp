@@ -60,16 +60,10 @@ int reverse_cmp(const void* v_str1, const void* v_str2)
     
     while (diff == 0 && len1 > 0 && len2 > 0)
     {
-	    diff = (int) string1[len1] - (int)string2[len2]; //^
+	    diff = string1[len1] - string2[len2]; 
 	    len1--;
 	    len2--;
     }
     
-    if (len1+1 == 0 || len2+1 ==0) //^?
-    {
-	    diff = string1[len1] - string2[len2];
-        return diff;
-    }
-
     return diff;
 }

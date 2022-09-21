@@ -1,14 +1,15 @@
-#include <stdio.h> //^ double import
+#ifndef MY_GUARD_HEADER_1
+#define MY_GUARD_HEADER_1
+
+#include <stdio.h> 
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
 #include <assert.h>
 #include <ctype.h>
-#include <sys/stat.h>
 
 #define DBG printf("%s:%d -- %s\n", __FILE__, __LINE__, __FUNCTION__);
 
-FILE* file_open1(const char*, int errno);
+FILE* file_open1(const char*);
 
 void text_write_to_file (FILE* result, struct line *Strings, int quantity_of_str);
 
@@ -37,4 +38,5 @@ struct Information
   char *buffer;
   struct line *strings;
 };
+#endif
 
