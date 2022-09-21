@@ -1,6 +1,6 @@
 #include "../include/i_o_text_funcs.h"
 
-FILE* file_open1(const char* name_of_out_file)
+FILE* file_open(const char* name_of_out_file)
 {   
     errno = 0;
     FILE* ptr_on_out = fopen(name_of_out_file, "w");

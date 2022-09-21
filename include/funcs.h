@@ -9,7 +9,7 @@
 
 #define DBG printf("%s:%d -- %s\n", __FILE__, __LINE__, __FUNCTION__);
 
-FILE* file_open1(const char*);
+FILE* file_open(const char*);
 
 void text_write_to_file (FILE* result, struct line *Strings, int quantity_of_str);
 
